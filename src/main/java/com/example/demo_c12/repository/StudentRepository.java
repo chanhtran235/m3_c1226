@@ -1,0 +1,59 @@
+package com.example.demo_c12.repository;
+
+
+import com.example.demo_c12.dto.StudentDto;
+import com.example.demo_c12.entity.Student;
+import com.example.demo_c12.util.ConnectDB;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentRepository implements IStudentRepository {
+    private final String SELECT_ALL = "select s.id,s.name,s.gender, c.name as class_name from students s join classes c on s.class_id= c.id;";
+    private final String SEARCH_BY_NAME = "call search_by_name(?);";
+    private final String SEARCH_BY_NAME_AND_CLASS = "call search_by_name_and_class_id(?,?);";
+    private final String INSERT_INTO = "insert into students(name,gender,score,class_id) values(?,?,?,?);";
+    private final String DELETE_BY_ID = "delete from students where id = ?;";
+
+
+    @Override
+    public List<StudentDto> findAll() {
+        List<StudentDto> studentDtoList =  new ArrayList<>();
+        try(Connection connection = ConnectDB.getConnectDB();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                boolean gender = resultSet.getBoolean("gender");
+                String className = resultSet.getString("class_name");
+                StudentDto studentDto = new StudentDto(id,name,gender,className);
+                studentDtoList.add(studentDto);
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return studentDtoList;
+    }
+
+    @Override
+    public List<Student> search(String name, int classId) {
+        return List.of();
+    }
+
+    @Override
+    public boolean add(Student student) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        return false;
+    }
+}
