@@ -54,6 +54,15 @@ public class StudentRepository implements IStudentRepository {
 
     @Override
     public boolean deleteById(int id) {
+        try(Connection connection = ConnectDB.getConnectDB();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID);
+        ) {
+            preparedStatement.setInt(1,id);
+           int effectRow = preparedStatement.executeUpdate();
+           return effectRow ==1;
+        }catch (SQLException e) {
+            System.out.println(" lỗi kết nối DB");
+        }
         return false;
     }
 }

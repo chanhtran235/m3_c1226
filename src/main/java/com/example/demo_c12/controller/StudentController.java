@@ -74,7 +74,16 @@ public class StudentController extends HttpServlet {
     }
 
     private void deleteById(HttpServletRequest req, HttpServletResponse resp) {
+     int deleteId = Integer.parseInt(req.getParameter("deleteId"));
+     boolean isSuccess = studentService.deleteById(deleteId);
+        try {
+            resp.sendRedirect("/student?mess="+isSuccess);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
+
 
     private void save(HttpServletRequest req, HttpServletResponse resp) {
 
