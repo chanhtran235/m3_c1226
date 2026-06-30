@@ -5,6 +5,7 @@
     <title>Title</title>
     <c:import url="../layout/library.jsp"/>
 </head>
+</head>
 <body>
 <c:import url="../layout/my-navbar.jsp"/>
 <h1>Danh sách sinh viên</h1>
@@ -13,7 +14,8 @@
 </c:if>
 
 <a href="/student?action=add">Thêm mới</a>
-<table class="table table-dark table-striped">
+<table id="tableStudent" class="table table-dark table-striped">
+    <thead>
     <tr>
         <th>STT</th>
         <th>Id</th>
@@ -23,27 +25,31 @@
         <th>Xoá</th>
 
     </tr>
-    <c:forEach var="student" items="${studentList}" varStatus="status">
-        <tr>
-            <td>${status.count}</td>
-            <td>${student.id}</td>
-            <td>${student.name}</td>
-            <td>
-                <c:if test="${student.gender}">
-                    <span>Nam</span>
-                </c:if>
-                <c:if test="${!student.gender}">
-                    <span>Nữ</span>
-                </c:if>
-            </td>
-            <td>${student.className}</td>
-            <td>
-                <button onclick="getInfoToDelete('${student.id}','${student.name}')" type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Xoá
-                </button>
-            </td>
-        </tr>
-    </c:forEach>
+    </thead>
+   <tbody>
+   <c:forEach var="student" items="${studentList}" varStatus="status">
+       <tr>
+           <td>${status.count}</td>
+           <td>${student.id}</td>
+           <td>${student.name}</td>
+           <td>
+               <c:if test="${student.gender}">
+                   <span>Nam</span>
+               </c:if>
+               <c:if test="${!student.gender}">
+                   <span>Nữ</span>
+               </c:if>
+           </td>
+           <td>${student.className}</td>
+           <td>
+               <button onclick="getInfoToDelete('${student.id}','${student.name}')" type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                   Xoá
+               </button>
+           </td>
+       </tr>
+   </c:forEach>
+   </tbody>
+
 
 </table>
 
@@ -73,6 +79,32 @@
         document.getElementById("deleteName").innerHTML = name;
         document.getElementById("deleteId").value = id;
     }
+</script>
+<script src="jquery/jquery-3.5.1.min.js"></script>
+<script src="datatables/js/jquery.dataTables.min.js"></script>
+<script src="datatables/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#tableStudent').dataTable( {
+            "dom": 'lrtip',
+            "lengthChange": false,
+            "pageLength": 2,
+            "info": false,
+            language: {
+                emptyTable: "Không có dữ liệu trong bảng",
+                paginate: {
+                    first: "Đầu",
+                    previous: "Trước",
+                    next: "Sau",
+                    last: "Cuối"
+                },
+                aria: {
+                    sortAscending: ": Sắp xếp tăng dần",
+                    sortDescending: ": Sắp xếp giảm dần"
+                }
+            }
+        });
+    } );
 </script>
 </body>
 </html>
