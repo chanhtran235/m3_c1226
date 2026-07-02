@@ -17,7 +17,10 @@ public class StudentService implements IStudentService{
     }
 
     @Override
-    public List<Student> search(String name, int classId) {
+    public List<StudentDto> search(String name, String classId) {
+        if (classId.equals("")){
+            return studentRepository.search(name);
+        }
         return studentRepository.search(name,classId);
     }
 

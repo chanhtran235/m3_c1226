@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IStudentService {
     List<StudentDto> findAll();
-    List<Student> search(String name, int classId);
+    List<StudentDto> search(String name, String classId);
     boolean add(Student student);
     boolean deleteById(int id);
 }

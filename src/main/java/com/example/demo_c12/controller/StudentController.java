@@ -1,6 +1,7 @@
 package com.example.demo_c12.controller;
 
 import com.example.demo_c12.dto.StudentDto;
+import com.example.demo_c12.entity.ClassCG;
 import com.example.demo_c12.entity.Student;
 import com.example.demo_c12.service.ClassService;
 import com.example.demo_c12.service.IClassService;
@@ -45,13 +46,22 @@ public class StudentController extends HttpServlet {
     }
 
     private void search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+       String searchName = req.getParameter("searchName");
+       String classId = req.getParameter("classId");
+        List<StudentDto> studentDtoList = studentService.search(searchName,classId);
+        List<ClassCG> classCGList = classService.findAll();
+        req.setAttribute("studentList",studentDtoList);
+        req.setAttribute("classList",classCGList);
+        req.setAttribute("searchName",searchName);
+        req.setAttribute("classId",classId);
+        req.getRequestDispatcher("/view/student/list.jsp").forward(req,resp);
     }
 
     private void showList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<StudentDto> studentDtoList = studentService.findAll();
+        List<ClassCG> classCGList = classService.findAll();
         req.setAttribute("studentList",studentDtoList);
-//        req.setAttribute("classList",classService.findAll());
+        req.setAttribute("classList",classCGList);
         req.getRequestDispatcher("/view/student/list.jsp").forward(req,resp);
     }
 

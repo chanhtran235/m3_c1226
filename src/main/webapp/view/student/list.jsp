@@ -13,7 +13,23 @@
     <h2 class="text-danger">Xoá thành công</h2>
 </c:if>
 
+
 <a href="/student?action=add">Thêm mới</a>
+<form action="/student" method="get">
+    <input hidden="hidden" name="action" value="search">
+    <input name="searchName" placeholder="Nhập tên" value="${searchName}">
+    <select name="classId">
+        <option value="">-------Chọn lớp--------</option>
+        <c:forEach items="${classList}" var="cls">
+            <option value="${cls.id}"
+                    <c:if test="${cls.id == classId}">
+                     selected
+                   </c:if>
+            >${cls.name}</option>
+        </c:forEach>
+    </select>
+    <button>Tìm kiếm</button>
+</form>
 <table id="tableStudent" class="table table-dark table-striped">
     <thead>
     <tr>
